@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link href="../../static/echobudget/base.css" rel="stylesheet" type="text/css">
+        <script src="../../static/echobudget/echobudget.js"></script>
+        <title>Echo Budget</title>
+    </head>
+
+    <body>
+        <div class="header" id="id_header_div">
+            Echo Budget
+        </div>
+        <section class="container">
+            <div class="left-half">
+                <div class="content">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+                <div class="navbar">
+                    <a class="navitem active" id="id_home">Home</a>
+                    <a class="navitem" id="id_record">Record</a>
+                    <a class="navitem" id="id_report">Report</a>
+                </div>
+            </div>
+            <div class="right-half">
+                <button>Press to Speak</button>
+            </div>
+        <script type="text/javascript">
+            var home_btn = document.getElementById("id_home")
+            home_btn.onclick = function() {
+                location.href = "{% url 'home' %}"
+            };
+            var record_btn = document.getElementById("id_record");
+            record_btn.onclick = function() {
+                location.href = "{% url 'entrylist' %}"
+            }
+            var report_btn = document.getElementById("id_report");
+            report_btn.onclick = function() {
+                location.href = "{% url 'report' %}"
+            }
+        </script>
+    </body>
+</html>

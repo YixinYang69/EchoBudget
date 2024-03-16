@@ -1,0 +1,15 @@
+{% extends "echobudget/base.html" %}
+
+{% block content %}
+    <div class="createEntry">
+        <div class="page_name"> Create Entry </div>
+        <form method="POST" class="new_entry" action="{% url 'create_entry' %}">
+            <table class='form_text'>
+                {% csrf_token %}
+                {{form}}
+            </table>
+            <button class="entry_btn" type="submit" id="id_entry_button">Submit</button>
+        </form>
+    </div>
+
+{% endblock %}
