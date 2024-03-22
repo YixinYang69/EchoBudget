@@ -20,17 +20,40 @@ def home_action(request):
         context['form'] = form
     return render(request, 'echobudget/home.html', context)
 
+def entry_filter(start_date, end_date):
+    result = Expense.objects.filter(date__range=[start_date, end_date])
+    return result
+
 def list_action(request):
+    # handles GET request to list page
     if request.method == "GET":
+        today = datetime.datetime.now()
+        # get first and last dates of this month
+        start_date = datetime.datetime(today.year, today.month, 1)
+        first_day_next_month = datetime.datetime(today.year + today.month // 12, 
+            today.month % 12 + 1, 1)
+        end_date = first_day_next_month - datetime.timedelta(days=1)
+        entries = entry_filter(start_date, end_date)
         form = DateSelectionForm()
-        context = {'form': form}
+        context = {'form': form, 'entries': entries}
+        return render(request, 'echoBudget/record.html', context)
+    elif request.method == "POST":
+        form = DateSelectionForm(request.POST)
+        if not form.is_valid():
+            print("form not valid")
+            context = {'message': "Invalid Form"}
+            return render(request, 'echoBudget/record.html', context)
+        start_date = form.cleaned_data['start_date']
+        end_date = form.cleaned_data['end_date']
+        entries = entry_filter(start_date, end_date)
+        context = {'form': form, 'entries': entries}
         return render(request, 'echoBudget/record.html', context)
 
 def report_action(request):
     if request.method == "GET":
         form = DateSelectionForm()
         context = {'form': form}
-        return render(request, 'echoBudget/record.html', context)
+        return render(request, 'echoBudget/report.html', context)
 
 def create_entry(request):
     pass
