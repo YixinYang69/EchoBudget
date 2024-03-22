@@ -7,15 +7,6 @@ from echoBudget.models import Category, Expense
 def load_entry_data(apps, schema_editor):
     expense_model = apps.get_model('echoBudget', 'Expense')
     cat_food, cat_necessities, cat_housing = None, None, None
-    # for obj in Expense.objects.all():
-    #     if obj['name'] == 'Food':
-    #         cat_food = obj
-    #     elif obj['name'] == 'Necessities':
-    #         cat_necessities = obj
-    #     elif obj['name'] == 'Housing':
-    #         cat_housing == obj
-    # if not cat_food or not cat_necessities or not cat_housing:
-    #     print("fail to find category")
     try:
         cat_food = Category.objects.get(name="Food")
         cat_housing = Category.objects.get(name='Housing')
