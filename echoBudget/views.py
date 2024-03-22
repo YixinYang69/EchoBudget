@@ -18,6 +18,24 @@ def home_action(request):
     if request.method == "GET":
         form = ExpenseForm()
         context['form'] = form
+    elif request.method == "POST":
+        form = ExpenseForm(request.POST)
+        if not form.is_valid():
+            print("form not valid")
+            context = {'message': "Invalid Form"}
+            return render(request, 'echoBudget/home.html', context)
+        try:
+            cate = Category.objects.get(id=form.cleaned_data['category'])
+        except:
+            context = {'message': 'Invalid category'}
+            return render(request, 'echoBudget/home.html', context)
+        expense = Expense(date = datetime.datetime.now(),
+                          amount = form.cleaned_data['amount'],
+                          item_name = form.cleaned_data['item_name'],
+                          category = cate)
+        expense.save()
+        request.session['message'] = 'Entry saved'
+        context['form'] = form
     return render(request, 'echobudget/home.html', context)
 
 def entry_filter(start_date, end_date):
@@ -54,6 +72,3 @@ def report_action(request):
         form = DateSelectionForm()
         context = {'form': form}
         return render(request, 'echoBudget/report.html', context)
-
-def create_entry(request):
-    pass

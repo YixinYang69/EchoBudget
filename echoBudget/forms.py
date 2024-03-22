@@ -18,6 +18,10 @@ class ExpenseForm(forms.Form):
     
     def clean(self):
         cleaned_data = super().clean()
+        item_name = cleaned_data['item_name']
+        if not all(x.isalnum() or x.isspace() for x in item_name):
+            raise forms.ValidationError("Item name can only contain numbers, letters, and spaces.")
+        return cleaned_data
 
 class DateSelectionForm(forms.Form):
     start_date = forms.DateField(widget=forms.NumberInput(attrs={'type': 'date'}))
