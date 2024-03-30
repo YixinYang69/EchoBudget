@@ -1,13 +1,51 @@
 {% extends "echobudget/base.html" %} {% block content %}
 <div class="report_page">
-  <div class="page_name">Financial Report</div>
   <form method="POST" class="time_range" action="{% url 'report' %}">
-    <table class="form_text">
-      {% csrf_token %} {{form}}
-    </table>
-    <button class="entry_btn" type="submit" id="id_entry_button">Submit</button>
+    <div class="form-container">
+      <div class="time-range-container">
+        <table class="form_text">
+          {% csrf_token %} {{form}}
+        </table>
+      </div>
+      <div class="time-button-container">
+        <button type="submit" id="id_time_button">Submit</button>
+      </div>
+    </div>
   </form>
-  <div class="report_content"></div>
+  <div class="report_content">
+    <canvas id="myPieChart" width="400" height="400"></canvas>
+    <script>
+        // Get data from Django view
+        var data = JSON.parse('{{ data|escapejs }}');
+        var labels_list = [
+            {% for item in labels %}
+                "{{ item }}"{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+        // Create pie chart
+        var ctx = document.getElementById('myPieChart').getContext('2d');
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels_list,
+                datasets: [{
+                    data: data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(255, 206, 86, 0.5)',
+                        'rgba(144, 238, 144, 0.5)',
+                        'rgba(200, 160, 255, 0.5)',
+                        'rgba(211, 211, 211, 0.5)',
+                    ]
+                }]
+            },
+            options: {
+                responsive: false
+            }
+        });
+    </script>
+  </div>
 </div>
 
 {% endblock %}

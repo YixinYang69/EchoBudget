@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <link href="../../static/echobudget/base.css" rel="stylesheet" type="text/css">
         <script src="../../static/echobudget/echobudget.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <title>Echo Budget</title>
     </head>
 
@@ -18,27 +19,27 @@
                     {% endblock %}
                 </div>
                 <div class="navbar">
-                    <a class="navitem active" id="id_home">Home</a>
-                    <a class="navitem" id="id_record">Record</a>
-                    <a class="navitem" id="id_report">Report</a>
+                    <ul>
+                        <li><a href="{% url 'home' %}" class="navitem{% if active == 'home' %} active{% endif %}" id="id_home" onclick="activate(this)">Home</a></li>
+                        <li><a href="{% url 'entrylist' %}" class="navitem{% if active == 'record' %} active{% endif %}" id="id_record" onclick="activate(this)">Record</a></li>
+                        <li><a href="{% url 'report' %}" class="navitem{% if active == 'report' %} active{% endif %}" id="id_report" onclick="activate(this)">Report</a></li>
+                    </ul>
                 </div>
             </div>
+            <div class="vertical-line"></div>
             <div class="right-half">
-                <button>Press to Speak</button>
+                <form action="{% url 'speak' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="speak-button-container">
+                        <button class="speak-button" type="submit">Press to Speak</button>
+                    </div>
+                </form>
+                {% if text %}
+                    <p>{{text}}</p>
+                {% endif %}
+                
             </div>
         <script type="text/javascript">
-            var home_btn = document.getElementById("id_home")
-            home_btn.onclick = function() {
-                location.href = "{% url 'home' %}"
-            };
-            var record_btn = document.getElementById("id_record");
-            record_btn.onclick = function() {
-                location.href = "{% url 'entrylist' %}"
-            }
-            var report_btn = document.getElementById("id_report");
-            report_btn.onclick = function() {
-                location.href = "{% url 'report' %}"
-            }
         </script>
     </body>
 </html>

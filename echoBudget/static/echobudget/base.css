@@ -1,24 +1,30 @@
-.choice_form {
-  width: 400px;
-  background: #fff;
-  color: #5e5c5c;
-  font-family: "Georgia";
-  font-size: 18px;
-  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
-  border: 0;
-  outline: 0;
-  padding: 18px 18px;
-  border-radius: 15px;
-  margin-top: 8px;
-  margin-bottom: 15px;
-}
-
 .navbar {
   background-color: #333;
   overflow: hidden;
-  position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 50%;
+  position:fixed;
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding:0;
+  overflow: hidden;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar li {
+  float: left;
+}
+
+.navbar li a {
+  display: block;
+  text-align: center;
+  padding: 1.6vh 6.8vw;
+  text-decoration: none;
 }
 
 .navitem {
@@ -26,14 +32,14 @@
   display: block;
   color: #f2f2f2;
   text-align: center;
-  padding: 14px 16px;
+  padding: 1 36vw;
   text-decoration: none;
-  font-size: 17px;
+  font-size: 1.5vw;
 }
 
 .navitem.active {
-  background-color: #04AA6D;
-  color: white;
+  background-color: rgb(150, 211, 252);
+  color: black;
 }
 
 .container {
@@ -51,4 +57,182 @@
   position: absolute;
   right: 0px;
   width: 50%;
+}
+
+.vertical-line {
+  position: absolute;
+  left: 50%; /* Position the line between the halves */
+  top: 10vh;
+  bottom: 10vh;
+  width: 0.1vw; /* Width of the vertical line */
+  background-color: #ccc; /* Color of the vertical line */
+}
+
+.speak-button-container {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 85vh; /* Full height of the viewport */
+}
+
+.speak-button {
+  width: 35vw; /* Adjust the width and height as needed */
+  height: 35vw;
+  border-radius: 50%; /* This makes the button circular */
+  background-color: white; /* Button background color */
+  color: black; /* Button text color */
+  border: solid; /* Remove border */
+  outline: black; /* Remove outline */
+  cursor: pointer; /* Change cursor on hover */
+  font-size: 300%; /* Adjust font size */
+}
+
+.new_entry_form {
+  font-size: 8vh;
+}
+
+input[type="text"], input[type="number"] {
+  border: 0.2vw solid #000;
+  border-radius: 0.5vw;
+  height: 12vh;
+  line-height: normal;
+  color: #282828;
+  display: block;
+  width: 80%;
+  box-sizing: border-box;
+  user-select: auto;
+  font-size: 8vh;
+  padding: 3vw 6vh;
+  padding-left: 1.2vw;
+  margin-bottom: 5vh;
+  :focus{
+      border: 0.3vw solid #5551ff;
+  }
+}
+
+input[type="date"] {
+  border: 0.2vw solid #000;
+  border-radius: 0.5vw;
+  height: 8vh;
+  line-height: normal;
+  color: #282828;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  user-select: auto;
+  font-size: 2vh;
+  padding: 1vw 1vh;
+  padding-left: 1.2vw;
+  margin-bottom: 1vh;
+  :focus{
+      border: 0.3vw solid #5551ff;
+  }
+}
+
+#new_entry_form select {
+  border: 0.2vw solid #000;
+  border-radius: 0.5vw;
+  height: 12vh;
+  line-height: normal;
+  color: #282828;
+  width: 80%;
+  font-size: 4vh;
+  padding-left: 1.2vw;
+  margin-bottom: 5vh;
+  :focus{
+    border: 0.3vw solid #5551ff;
+  }
+}
+
+#new_entry_form option {
+  font-size: 4vh;
+}
+
+.entry-btn {
+  display: inline-block;
+  outline: 0;
+  border: 0;
+  cursor: pointer;
+  border-radius: 1vw;
+  padding: 3.4vh 5.4vh 3.2vh;
+  font-size: 4vh;
+  font-weight: 700;
+  line-height: 1;
+  transition: transform 200ms,background 200ms;
+  background: transparent;
+  color: #000000;
+  box-shadow: 0 0 0 3px #000000 inset;
+  margin-left: 15vw;
+  :hover{
+      transform: translateY(-0.2vw);
+  }
+}
+
+#new_entry_form table th label {
+  /* Add your custom styles for field names (labels) */
+  display: flex;
+  font-weight: bold;
+  color: black;
+  font-size: 4vh;
+  margin-bottom: 2vh;
+  justify-content: center; /* Center the content horizontally */
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.left-side-container {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 90vh;
+  
+}
+
+.entry-list {
+  list-style: none;
+  padding: 0;
+}
+
+.entry-list li {
+  padding: 1.5vh;
+  margin-bottom: 0.5vh;
+  border-bottom: 0.2vh solid #ccc; /* Top border to mimic notebook paper lines */
+  font-size: 3vh;
+}
+
+.form-container {
+  display: flex;
+  align-items: stretch;
+}
+
+.time-range-container {
+  width: 50%;
+}
+
+.time-button-container {
+  width: 50%;
+}
+
+#id_time_button {
+  display: inline-block;
+  outline: 0;
+  border: 0;
+  cursor: pointer;
+  border-radius: 1vw;
+  padding: 3.4vh 5.4vh 3.2vh;
+  font-size: 4vh;
+  font-weight: 700;
+  line-height: 1;
+  transition: transform 200ms,background 200ms;
+  background: transparent;
+  color: #000000;
+  box-shadow: 0 0 0 3px #000000 inset;
+  margin-top: 3vh;
+  :hover{
+      transform: translateY(-0.2vw);
+  }
+}
+
+#id_entry_list {
+  overflow-y: scroll;
+  height: 70vh;
 }

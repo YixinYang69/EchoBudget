@@ -1,13 +1,20 @@
 {% extends "echobudget/base.html" %} {% block content %}
 <div class="record_page">
-  <form method="POST" class="time_range" action="{% url 'entrylist' %}">
-    <table class="form_text">
-      {% csrf_token %} {{form}}
-    </table>
-    <button class="entry_btn" type="submit" id="id_entry_button">Submit</button>
+
+  <form id="entry_time_range" method="POST" class="time_range" action="{% url 'entrylist' %}">
+    <div class="form-container">
+      <div class="time-range-container">
+        <table class="form_text">
+          {% csrf_token %} {{form}}
+        </table>
+      </div>
+      <div class="time-button-container">
+        <button type="submit" id="id_time_button">Submit</button>
+      </div>
+    </div>
   </form>
   <div class="entrylist" id="id_entry_list">
-    <ul>
+    <ul class="entry-list">
       {% for entry in entries %}
       <li>
         {{entry.date}} {{entry.amount}} {{entry.item_name}} {{entry.category}}
