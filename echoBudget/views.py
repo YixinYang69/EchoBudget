@@ -8,6 +8,10 @@ from echoBudget.models import Expense, Category
 import datetime, json
 import speech_recognition as sr
 
+import spacy
+
+nlp = spacy.load("en_core_web_sm")
+
 # Create your views here.
 def home_action(request):
     context = {'active' : 'home'}
@@ -104,15 +108,39 @@ def report_action(request):
 
 def speak_action(request):
     if request.method == "POST":
-        cur_url = request.path
-        print(cur_url)
         r = sr.Recognizer()
         try:
             with sr.Microphone() as source:
                 audio = r.listen(source, 10, 5)
             text_output = r.recognize_google(audio)
-            if "hello" in text_output:
-                print("Yes!")
+            print("text_output: " + text_output)
+            if "report" in text_output:
+                print("yes!")
+            doc = nlp(text_output)
+            action = ""
+            for token in doc:
+                if (token.pos_ == "VERB"):
+                    action = token.text
+
+                    
+            # for ent in doc.ents:
+            #     if (ent.label_ == "DATE"):
+            #         # month year to month year
+            #         date = ent.text
+            #     if (ent.label_ == "MONEY"):
+            #         # $5 // 5 dollars
+            #         price = ent.text
+            #     if (ent.label_ == "ITEM"):
+            #         item = ent.text
+            print(action)
+            print(type(action))
+            print(action == "generate")
+            if "enter" in action:
+                return redirect('/home')
+            if "get" in action:
+                return redirect('/entrylist')
+            if "generate" in action:
+                print("action correct!!")
                 return redirect('/report')
             else:
                 return render(request, 'echobudget/base.html', {'text': text_output})
