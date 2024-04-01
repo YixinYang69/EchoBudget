@@ -28,12 +28,12 @@ def home_action(request):
         if not form.is_valid():
             print("form not valid")
             context = {'message': "Invalid Form"}
-            return render(request, 'echoBudget/home.html', context)
+            return render(request, 'echobudget/home.html', context)
         try:
             cate = Category.objects.get(id=form.cleaned_data['category'])
         except:
             context = {'message': 'Invalid category'}
-            return render(request, 'echoBudget/home.html', context)
+            return render(request, 'echobudget/home.html', context)
         expense = Expense(date = datetime.datetime.now(),
                           amount = form.cleaned_data['amount'],
                           item_name = form.cleaned_data['item_name'],
@@ -59,18 +59,18 @@ def list_action(request):
         entries = entry_filter(start_date, end_date)
         form = DateSelectionForm()
         context = {'form': form, 'entries': entries, 'active': 'record'}
-        return render(request, 'echoBudget/record.html', context)
+        return render(request, 'echobudget/record.html', context)
     elif request.method == "POST":
         form = DateSelectionForm(request.POST)
         if not form.is_valid():
             print("form not valid")
             context = {'message': "Invalid Form"}
-            return render(request, 'echoBudget/record.html', context)
+            return render(request, 'echobudget/record.html', context)
         start_date = form.cleaned_data['start_date']
         end_date = form.cleaned_data['end_date']
         entries = entry_filter(start_date, end_date)
         context = {'form': form, 'entries': entries, 'active': 'record'}
-        return render(request, 'echoBudget/record.html', context)
+        return render(request, 'echobudget/record.html', context)
 
 def report_action(request):
     categories = Category.objects.values_list('name', flat=True)
@@ -89,7 +89,7 @@ def report_action(request):
         if not form.is_valid():
             print("form not valid")
             context = {'message': "Invalid Form"}
-            return render(request, 'echoBudget/report.html', context)
+            return render(request, 'echobudget/report.html', context)
         start_date = form.cleaned_data['start_date']
         end_date = form.cleaned_data['end_date']
         entries = entry_filter(start_date, end_date)
@@ -102,9 +102,12 @@ def report_action(request):
             price += float(e.amount)
         entries_num.append(price)
     total = sum(entries_num)
-    data = [num/total for num in entries_num]
+    if total == 0:
+        data = [0 for _ in range(len(entries_num))]
+    else:
+        data = [num/total for num in entries_num]
     context = {'form': form, 'active': 'report', 'labels': labels, 'data': data}
-    return render(request, 'echoBudget/report.html', context)
+    return render(request, 'echobudget/report.html', context)
 
 def speak_action(request):
     if request.method == "POST":
