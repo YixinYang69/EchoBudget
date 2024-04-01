@@ -116,9 +116,6 @@ def speak_action(request):
             with sr.Microphone() as source:
                 audio = r.listen(source, 10, 5)
             text_output = r.recognize_google(audio)
-            print("text_output: " + text_output)
-            if "report" in text_output:
-                print("yes!")
             doc = nlp(text_output)
             action = ""
             for token in doc:
@@ -135,15 +132,11 @@ def speak_action(request):
             #         price = ent.text
             #     if (ent.label_ == "ITEM"):
             #         item = ent.text
-            print(action)
-            print(type(action))
-            print(action == "generate")
             if "enter" in action:
                 return redirect('/home')
             if "get" in action:
                 return redirect('/entrylist')
             if "generate" in action:
-                print("action correct!!")
                 return redirect('/report')
             else:
                 return render(request, 'echobudget/base.html', {'text': text_output})
