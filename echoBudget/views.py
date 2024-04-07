@@ -152,7 +152,6 @@ def speak_action(request):
             return render(request, 'echobudget/base.html', {'text': "Ooops"})
 
 def modify_action(request, id):
-    print("entry modify_action with id" + str(id))
     context = {'active': 'record', 'entryid': id}
     if 'message' in request.session:
         # display the message and delete it in request.session
@@ -166,8 +165,9 @@ def modify_action(request, id):
         except:
             request.session['message'] = "Invalid entry id"
             return redirect('entrylist')
+        category = obj.category.id
         initial_data = {
-            'category': obj.category,
+            'category': category,
             'amount': obj.amount,
             'item_name': obj.item_name
         }
