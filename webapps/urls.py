@@ -25,4 +25,5 @@ urlpatterns = [
     path('entrylist', views.list_action, name='entrylist'),
     path('report', views.report_action, name='report'),
     path('speak', views.speak_action, name='speak'),
+    path('modify/<int:id>', views.modify_action, name='modify'),
 ]

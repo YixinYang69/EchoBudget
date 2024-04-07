@@ -48,6 +48,12 @@ def entry_filter(start_date, end_date):
     return result
 
 def list_action(request):
+    context = {'active': 'record'}
+    if 'message' in request.session:
+        # display the message and delete it in request.session
+        message = request.session['message']
+        context['message'] = message
+        del request.session['message']
     # handles GET request to list page
     if request.method == "GET":
         today = datetime.datetime.now()
@@ -144,3 +150,49 @@ def speak_action(request):
             return render(request, 'echobudget/base.html', {'text': "Didn't hear"})
         except sr.UnknownValueError:
             return render(request, 'echobudget/base.html', {'text': "Ooops"})
+
+def modify_action(request, id):
+    print("entry modify_action with id" + str(id))
+    context = {'active': 'record', 'entryid': id}
+    if 'message' in request.session:
+        # display the message and delete it in request.session
+        message = request.session['message']
+        context['message'] = message
+        del request.session['message']
+    if request.method == 'GET':
+        obj = None
+        try:
+            obj = Expense.objects.get(id=id)
+        except:
+            request.session['message'] = "Invalid entry id"
+            return redirect('entrylist')
+        initial_data = {
+            'category': obj.category,
+            'amount': obj.amount,
+            'item_name': obj.item_name
+        }
+        form = ExpenseForm(initial_data)
+        context['form'] = form
+        return render(request, 'echobudget/modify.html', context)
+    elif request.method == 'POST':
+        form = ExpenseForm(request.POST)
+        if not form.is_valid():
+            request.session['message'] = "Invalid form"
+            context = {'message': "Invalid Form"}
+            return redirect('modify', id)
+        try:
+            obj = Expense.objects.get(id=id)
+        except:
+            request.session['message'] = "Invalid entry id"
+            return redirect('entrylist')
+        try:
+            cate = Category.objects.get(id=form.cleaned_data['category'])
+        except:
+            request.session['message'] = "Invalid category"
+            return redirect('entrylist')
+        obj.category = cate
+        obj.amount = form.cleaned_data['amount']
+        obj.item_name = form.cleaned_data['item_name']
+        obj.save()
+        request.session['message'] = "Entry updated"
+        return redirect('entrylist')

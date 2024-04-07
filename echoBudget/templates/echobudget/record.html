@@ -1,7 +1,11 @@
 {% extends "echobudget/base.html" %} {% block content %}
 <div class="record_page">
-
-  <form id="entry_time_range" method="POST" class="time_range" action="{% url 'entrylist' %}">
+  <form
+    id="entry_time_range"
+    method="POST"
+    class="time_range"
+    action="{% url 'entrylist' %}"
+  >
     <div class="form-container">
       <div class="time-range-container">
         <table class="form_text">
@@ -17,7 +21,13 @@
     <ul class="entry-list">
       {% for entry in entries %}
       <li>
-        {{entry.date}} {{entry.amount}} {{entry.item_name}} {{entry.category}}
+        <div>
+          {{entry.id}} {{entry.date}} {{entry.amount}} {{entry.item_name}}
+          {{entry.category}}
+        </div>
+        <div>
+          <a class="button" href="{% url 'modify' entry.id %}"> Modify </a>
+        </div>
       </li>
       {% endfor %}
     </ul>
