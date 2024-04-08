@@ -132,6 +132,13 @@ def audio_report_helper(page, date):
         first_day_next_month = datetime.datetime(today.year + today.month // 12, 
             today.month % 12 + 1, 1)
         end_date = first_day_next_month - datetime.timedelta(days=1)
+    if "to" not in date:
+        parsed_data = datetime.datetime.strptime(date.strip(), "%B %Y")
+        start_date = parsed_data.strftime("%Y-%m-01")
+        tmp_end_date = start_date.split("-")
+        end_year, end_month = tmp_end_date[0], tmp_end_date[1]
+        num_days = calendar.monthrange(int(end_year), int(end_month))
+        end_date = end_year + "-" + end_month + "-" + str(num_days[1])
     else:
         dates = date.strip().split("to")
         parsed_list = []
@@ -145,7 +152,11 @@ def audio_report_helper(page, date):
         num_days = calendar.monthrange(int(end_year), int(end_month))
         end_date = end_date + "-" + str(num_days[1])
     entries = entry_filter(start_date, end_date)
-    form = DateSelectionForm()
+    initial_data = {
+        'start_date': start_date,
+        'end_date': end_date,
+    }
+    form = DateSelectionForm(initial_data)
     context = {}
     if page == "report":
         categories = Category.objects.values_list('name', flat=True)
@@ -163,7 +174,6 @@ def play_output():
         tts = gTTS(text=text, lang=language)
     tts.save("output.mp3")
     os.system("afplay output.mp3")
-    os.remove('output.mp3')
 
 def speak_action(request):
     if request.method == "POST":
@@ -171,8 +181,9 @@ def speak_action(request):
         try:
             with sr.Microphone() as source:
                 play_output()
-                time.sleep(1)
+                # time.sleep(1)
                 audio = r.listen(source, 12, 5)
+                os.remove('output.mp3')
             text_output = r.recognize_google(audio)
             doc = nlp(text_output)
             action = ""
