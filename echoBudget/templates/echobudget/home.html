@@ -1,4 +1,32 @@
 {% extends "echobudget/base.html" %} {% block content %}
+<script>
+  $(function(){
+    $('#item_name_input').keyboard({
+              layout: 'qwerty',
+              css: {
+                  // input & preview
+                  input: 'form-control input-sm',
+                  // keyboard container
+                  container: 'center-block dropdown-menu', // jumbotron
+                  // default state
+                  buttonDefault: 'btn btn-default',
+                  // hovered button
+                  buttonHover: 'btn-primary',
+                  // Action keys (e.g. Accept, Cancel, Tab, etc);
+                  // this replaces "actionClass" option
+                  buttonAction: 'active',
+                  // used when disabling the decimal button {dec}
+                  // when a decimal exists in the input area
+                  buttonDisabled: 'disabled'
+              }
+           })
+          .addTyping({
+              showTyping: true,
+              delay: 50
+          });
+  });
+</script>
+
 <div class="createEntry">
   <div class="left-side-container">
     <form id="new_entry_form" method="POST" class="new_entry" action="{% url 'home' %}">
