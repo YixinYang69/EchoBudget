@@ -26,4 +26,5 @@ urlpatterns = [
     path('report', views.report_action, name='report'),
     path('speak', views.speak_action, name='speak'),
     path('modify/<int:id>', views.modify_action, name='modify'),
+    path('delete/<int:id>', views.delete_action, name='delete'),
 ]

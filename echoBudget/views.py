@@ -259,3 +259,15 @@ def modify_action(request, id):
         obj.save()
         request.session['message'] = "Entry updated"
         return redirect('entrylist')
+
+def delete_action(request, id):
+    context = {'active': 'record'}
+    if request.method == 'GET':
+        obj = None
+        try:
+            obj = Expense.objects.get(id=id)
+        except:
+            request.session['message'] = "Invalid entry id"
+            return redirect('entrylist')
+        obj.delete()
+    return redirect('entrylist')
