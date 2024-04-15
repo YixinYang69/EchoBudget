@@ -13,7 +13,9 @@ import spacy
 from gtts import gTTS
 import os
 
-nlp = spacy.load("en_core_web_sm")
+nlp_default = spacy.load("en_core_web_sm")
+nlp_customized = spacy.load("./model-best")
+
 module_dir = os.path.dirname(__file__)
 file_path = os.path.join(module_dir, 'sample.txt')
 
@@ -174,23 +176,36 @@ def speak_action(request):
                 time.sleep(1)
                 audio = r.listen(source, 12, 5)
             text_output = r.recognize_google(audio)
-            doc = nlp(text_output)
+            doc1 = nlp_default(text_output)
+            doc2 = nlp_customized(text_output)
+
             action = ""
             date = ""
             price = ""
-            for token in doc:
+            num = ""
+            item = ""
+            action_2 = ""
+            for token in doc1:
                 if (token.pos_ == "VERB"):
                     action = token.text
-            for ent in doc.ents:
-                if (ent.label_ == "DATE"): # month year to month year
-                    date = ent.text
+            for ent in doc1.ents:
+                if (ent.label_ == "DATE"): 
+                    date = ent.text # month year to month year
                 if (ent.label_ == "MONEY"): # $5 // 5 dollars
-                    price = ent.text
-            #     if (ent.label_ == "ITEM"):
-            #         item = ent.text
-            if "enter" in action:
+                    price = ent.text # 5 // 5 dollars
+                if (ent.label_ == "CARDINAL"): # number one // No.1
+                    num = ent.text # one // 1
+
+            for ent in doc2.ents:
+                if (ent.label_ == "ACTION"): # view entries // remove/modify entry // generate report // confirm
+                    action_2 = ent.text
+                if (ent.label_ == "ITEM"):
+                    item = ent.text
+
+            if ("enter" in action) or ("buy" in action) or ("spend" in action):
+                # add items here
                 return redirect('/home')
-            if "get" in action:
+            if ("get" in action) or ("view entries" in action_2):
                 context = audio_report_helper('record', date)
                 return render(request, 'echobudget/record.html', context)
             if "generate" in action:
