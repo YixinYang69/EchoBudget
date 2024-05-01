@@ -49,3 +49,15 @@
 </div>
 
 {% endblock %}
+
+{% block speak %}
+    <form action="{% url 'speakreport' %}" method="POST">
+		{% csrf_token %}
+		<div class="speak-button-container">
+			<button class="speak-button" type="submit">Press to Speak</button>
+		</div>
+	</form>
+	{% if message %}
+		<p>{{message}}</p>
+	{% endif %}
+{% endblock %}

@@ -24,5 +24,10 @@ urlpatterns = [
     path('home', views.home_action, name='home'),
     path('entrylist', views.list_action, name='entrylist'),
     path('report', views.report_action, name='report'),
-    path('speak', views.speak_action, name='speak'),
+    path('speakhome', views.speak_home_action, name='speakhome'),
+    path('speakentrylist', views.speak_entrylist_action, name='speakentrylist'),
+    path('speakmodify', views.speak_modify_action, name='speakmodify'),
+    path('speakreport', views.speak_report_action, name='speakreport'),
+    path('modify/<int:id>', views.modify_action, name='modify'),
+    path('delete/<int:id>', views.delete_action, name='delete'),
 ]

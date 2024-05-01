@@ -236,3 +236,23 @@ input[type="date"] {
   overflow-y: scroll;
   height: 70vh;
 }
+
+.record-button {
+  background-color: rgb(150, 211, 252);
+  color: black;
+  padding: 1vh 2.5vw;
+  text-decoration: none;
+  width: 7vw;
+  height: 4.2vh;
+  display: inline-block;
+  text-align: center;
+  font-size: 4vh;
+}
+
+.record-button-container {
+  height: 5vh;
+}
+
+.entry-text {
+  font-size: 6vh;
+}
